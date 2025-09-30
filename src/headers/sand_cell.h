@@ -12,8 +12,29 @@ public:
         int height = grid.size();
         int width = grid[0].size();
 
-        if(y + 1 < height && grid[y + 1][x]->get_type() == cell_type::EMPTY){
-            std::swap(grid[y][x], grid[y + 1][x]);
+        yVelocity += GRAVITY;
+        if(yVelocity >= MAX_FALL_SPEED) yVelocity = MAX_FALL_SPEED;
+
+        int fall = static_cast<int>(yVelocity);
+
+        for (int i = 0; i < fall; i++){
+            if(y + 1 < height){
+                if(grid[y + 1][x]->get_type() == cell_type::EMPTY){
+                    std::swap(grid[y][x], grid[y + 1][x]);
+                    y += 1;
+                }
+                else if(grid[y + 1][x]->get_type() == !cell_type::EMPTY && grid[y + 1][x - 1]->get_type() == cell_type::EMPTY){
+                    std::swap(grid[y][x], grid[y + 1][x - 1]);
+                    y += 1;
+                    x -= 1;
+                }
+                else if(grid[y + 1][x]->get_type() == !cell_type::EMPTY && grid[y + 1][x + 1]->get_type() == cell_type::EMPTY){
+                    std::swap(grid[y][x], grid[y + 1][x + 1]);
+                    y += 1;
+                    x += 1;
+                }
+            }
         }
+
     }
 };

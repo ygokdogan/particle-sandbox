@@ -1,6 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+const float GRAVITY = 0.3f;
+const float MAX_FALL_SPEED = 3;
+
 enum cell_type {
     EMPTY,
     SAND,
@@ -30,6 +33,7 @@ protected:
     cell_type type;
     sf::Color color;
     bool has_been_updated;
+    float yVelocity;
 
     void set_color_by_type(){
         switch(type){

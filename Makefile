@@ -1,6 +1,6 @@
 # Project settings
 TARGET = main
-SRC = $(wildcard *.cpp)
+SRC = $(wildcard src/*.cpp)
 
 # Compiler and flags
 CXX = g++
