@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 const float GRAVITY = 0.3f;
-const float MAX_FALL_SPEED = 3;
+const float MAX_FALL_SPEED = 4;
 
 enum cell_type {
     EMPTY,

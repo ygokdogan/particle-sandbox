@@ -13,20 +13,32 @@ const int CELL_SIZE = 4;
 const int GRID_WIDTH = WIDTH / CELL_SIZE;
 const int GRID_HEIGHT = HEIGHT / CELL_SIZE;
 
+sf::Vector2f get_mouse_pos(sf::RenderWindow& window){
+    sf::Vector2i pixel_pos = sf::Mouse::getPosition(window);
+    sf::Vector2f world_pos = window.mapPixelToCoords(pixel_pos);
+    return world_pos;
+}
+
+void spawn_sand_cell(grid& grid, sf::RenderWindow& window){
+    sf::Vector2f pos = get_mouse_pos(window);
+    int gx = static_cast<int>(pos.x) / CELL_SIZE;
+    int gy = static_cast<int>(pos.y) / CELL_SIZE;
+
+    if(gx >= 0 && gx < GRID_WIDTH && gy >= 0 && gy <= GRID_HEIGHT){
+        if(grid.cells[gy][gx]->get_type() == cell_type::EMPTY){
+            grid.set_cell(gx, gy, new sand_cell());
+        }
+    }
+
+}
+
 
 int main()
 {
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode({WIDTH, HEIGHT}), "SFML window");
+    sf::RenderWindow window(sf::VideoMode({WIDTH, HEIGHT}), "Particle Sandbox");
 
     grid grid(GRID_WIDTH, GRID_HEIGHT);
-
-    grid.set_cell(100, 32, new sand_cell());
-    grid.set_cell(100, 34, new sand_cell());
-    grid.set_cell(100, 36, new sand_cell());
-    grid.set_cell(100, 38, new sand_cell());
-    grid.set_cell(100, 40, new sand_cell());
-    grid.set_cell(100, 30, new sand_cell());
     
     // Start the game loop
     while (window.isOpen())
@@ -38,6 +50,10 @@ int main()
             if (event->is<sf::Event::Closed>()){
                 window.close();
             }
+        }
+         
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+            spawn_sand_cell(grid, window);
         }
 
         grid.reset_updates();

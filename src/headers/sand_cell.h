@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdlib>
 #include "cell.h"
 
 class sand_cell : public cell{
@@ -21,18 +22,36 @@ public:
             if(y + 1 < height){
                 if(grid[y + 1][x]->get_type() == cell_type::EMPTY){
                     std::swap(grid[y][x], grid[y + 1][x]);
-                    y += 1;
+                    y++;
                 }
-                else if(grid[y + 1][x]->get_type() == !cell_type::EMPTY && grid[y + 1][x - 1]->get_type() == cell_type::EMPTY){
-                    std::swap(grid[y][x], grid[y + 1][x - 1]);
-                    y += 1;
-                    x -= 1;
+                else{
+                    bool canLeft = grid[y + 1][x]->get_type() != cell_type::EMPTY && x > 0 && grid[y + 1][x - 1]->get_type() == cell_type::EMPTY;
+                    bool canRight = grid[y + 1][x]->get_type() != cell_type::EMPTY && x < width - 1 && grid[y + 1][x + 1]->get_type() == cell_type::EMPTY;
+
+                    if(canRight && canLeft){
+                        if(rand() % 2 == 0){
+                            std::swap(grid[y][x], grid[y + 1][x + 1]);
+                            y++; x++;
+                        }
+                        else{
+                            std::swap(grid[y][x], grid[y + 1][x - 1]);
+                            y++; x--;
+                        }
+                    }
+                    else if(canRight){
+                        std::swap(grid[y][x], grid[y + 1][x + 1]);
+                        y++; x++;
+                    }
+                    else if(canLeft){
+                        std::swap(grid[y][x], grid[y + 1][x - 1]);
+                        y++; x--;
+                    }
+                    else{
+                        yVelocity = 0;
+                        break;
+                    }
                 }
-                else if(grid[y + 1][x]->get_type() == !cell_type::EMPTY && grid[y + 1][x + 1]->get_type() == cell_type::EMPTY){
-                    std::swap(grid[y][x], grid[y + 1][x + 1]);
-                    y += 1;
-                    x += 1;
-                }
+            
             }
         }
 
