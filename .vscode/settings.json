@@ -30,5 +30,12 @@
         "variant": "cpp",
         "vector": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/ygokdogan/Documents/VSCodeProjects/C++/opengl/particle-sandbox/particle-sandbox",
+            "binaryPath": "/Users/ygokdogan/Documents/VSCodeProjects/C++/opengl/particle-sandbox/particle-sandbox/main",
+            "binaryArgs": []
+        }
+    ]
 }

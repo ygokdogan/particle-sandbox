@@ -23,11 +23,6 @@ class grid
                 delete cell;
     }
 
-    void reset_updates() {
-        for (auto &row : cells)
-            for (auto &cell : row)
-                cell->reset_update();
-    }
 
     void update_all(){
         for (int y = height - 1; y >= 0; --y){
