@@ -9,7 +9,7 @@
 const int WIDTH = 800;
 const int HEIGHT = 600;
 
-const int CELL_SIZE = 4;
+const int CELL_SIZE = 5;
 const int GRID_WIDTH = WIDTH / CELL_SIZE;
 const int GRID_HEIGHT = HEIGHT / CELL_SIZE;
 
@@ -19,14 +19,14 @@ sf::Vector2f get_mouse_pos(sf::RenderWindow& window){
     return world_pos;
 }
 
-void spawn_sand_cell(grid& grid, sf::RenderWindow& window){
+void spawn_cell(grid& grid, sf::RenderWindow& window, cell* new_cell){
     sf::Vector2f pos = get_mouse_pos(window);
     int gx = static_cast<int>(pos.x) / CELL_SIZE;
     int gy = static_cast<int>(pos.y) / CELL_SIZE;
 
     if(gx >= 0 && gx < GRID_WIDTH && gy >= 0 && gy <= GRID_HEIGHT){
         if(grid.cells[gy][gx]->get_type() == cell_type::EMPTY){
-            grid.set_cell(gx, gy, new sand_cell());
+            grid.set_cell(gx, gy, new_cell);
         }
     }
 
@@ -38,7 +38,7 @@ int main()
     // Create the main window
     sf::RenderWindow window(sf::VideoMode({WIDTH, HEIGHT}), "Particle Sandbox");
 
-    grid grid(GRID_WIDTH, GRID_HEIGHT);
+    grid grid(GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
     
     // Start the game loop
     while (window.isOpen())
@@ -53,7 +53,7 @@ int main()
         }
          
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
-            spawn_sand_cell(grid, window);
+            spawn_cell(grid, window, new sand_cell());
         }
 
         grid.reset_updates();
@@ -62,16 +62,8 @@ int main()
         // Clear screen
         window.clear();
 
-        for (int y = 0; y < GRID_HEIGHT; ++y) {
-            for (int x = 0; x < GRID_WIDTH; ++x) {
-                sf::RectangleShape rect(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-                rect.setPosition(sf::Vector2f(x * CELL_SIZE, y * CELL_SIZE));
-                rect.setFillColor(grid.cells[y][x]->get_color());
-
-                window.draw(rect);
-            }
-        }
-
+        grid.draw(window);
+        
         // Update the window
         window.display();
     }
